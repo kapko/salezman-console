@@ -8,16 +8,15 @@ exports.onWritePaid = functions.database.ref('/paid-list/{storeName}/{prodId}/')
   let { prodId, storeName } = event.params;
   let uid = (data) ? data.collected_by : prevData.collected_by;
 
-  console.log(`URL /my-work-payment/${uid}/${prodId}`);
+  console.log(`URL /my-work-payment/${uid}/${storeName}/${prodId}`);
   console.log('data', data);
   console.log('prevData', prevData);
   // on remove item
   if (!data) {
-    return db.setValue(`/my-work-payment/${uid}/${prodId}`, null);
+    return db.setValue(`/my-work-payment/${uid}/${storeName}/${prodId}`, null);
   } else {
-    data['_name'] = storeName;
   // on create item
-    return db.setValue(`/my-work-payment/${uid}/${prodId}`, data);
+    return db.setValue(`/my-work-payment/${uid}/${storeName}/${prodId}`, data);
   }
 
 });

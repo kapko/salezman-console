@@ -6,14 +6,14 @@ exports.onWriteUserStockProduct = functions.database.ref('/users-product/{storeN
   let data = event.data.val();
   let { userId, date, prodId, storeName } = event.params;
 
-  console.log(`CHANGED /my-work-stock/${userId}/${prodId}`);
+  console.log(`CHANGED /my-work-stock/${userId}/${storeName}${prodId}`);
   // on remove item
   if (!data) {
-    return db.setValue(`/my-work-stock/${userId}/${prodId}`, null);
+    return db.setValue(`/my-work-stock/${userId}/${storeName}${prodId}`, null);
   } else {
   // on create item
     data['date'] = date;
     data['store_name'] = storeName;
-    return db.setValue(`/my-work-stock/${userId}/${prodId}`, data);
+    return db.setValue(`/my-work-stock/${userId}/${storeName}${prodId}`, data);
   }
 });

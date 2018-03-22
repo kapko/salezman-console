@@ -8,15 +8,15 @@ exports.onWriteSupply = functions.database.ref('/payments/{storeName}/{prodId}/'
   let { prodId, storeName } = event.params;
   let uid = (data) ? data.supplied_by : prevData.supplied_by;
 
-  console.log(`URL /my-work-supply/${uid}/${storeName}/${prodId}`);
+  console.log(`URL /my-work-supply/${uid}/${prodId}`);
   console.log('data', data);
   console.log('prevData', prevData);
   // on remove item
   if (!data) {
-    return db.setValue(`/my-work-supply/${uid}/${storeName}/${prodId}`, null);
+    return db.setValue(`/my-work-supply/${uid}/${prodId}`, null);
   } else {
   // on create item
-    return db.setValue(`/my-work-supply/${uid}/${storeName}/${prodId}`, data);
+    return db.setValue(`/my-work-supply/${uid}/${prodId}`, data);
   }
 
 });

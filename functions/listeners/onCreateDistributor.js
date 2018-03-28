@@ -6,7 +6,7 @@ const SENDGRID_API_KEY = functions.config().mail.key;
 sgMail.setApiKey(SENDGRID_API_KEY);
 
 exports.onCreateDistributor = functions.database.ref('/distributors-users/{disId}/{userId}')
-.onWrite(event => {
+.onCreate(event => {
   let data = event.data.val();
   let { userId, disId } = event.params;
 
@@ -30,6 +30,13 @@ exports.onCreateDistributor = functions.database.ref('/distributors-users/{disId
         <i>You can change your password on prodile settings on Application</i>
         `
       };
-      return sgMail.send(msg);
+      console.log('MSG', msg);
+      return sgMail.send(msg).then(res => {
+        console.log('SENT', res);
+        return res;
+      })
+      .catch(err => {
+        console.log('ERRR', err);
+      })
   });
 });

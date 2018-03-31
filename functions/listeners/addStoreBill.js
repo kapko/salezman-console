@@ -14,7 +14,7 @@ exports.addStoreBill = functions.database.ref('/my-work-ordered/{userId}/{prodId
     return db.getValue(`/linked-user/${userId}`)
       .then(users => {
         let opt = [];
-        
+
         for (let id in users) {
           console.log(`REMOVE /store-billing/${id}/${prevData.store_name}${prevData.name}${prevData.Weight}`);
 

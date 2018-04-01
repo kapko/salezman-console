@@ -39,6 +39,9 @@ exports.addStoreBill = functions.database.ref('/my-work-ordered/{userId}/{prodId
         bilObject.name = '' + data.name + data.Weight;
         bilObject.store_name = data.store_name;
         bilObject.order_by = userId;
+        bilObject.order_date = data.count_date
+
+        console.log('bilObject', bilObject);
 
         for (let id in users) {
           console.log(`/store-billing/${id}/${bilObject.store_name}${bilObject.name}`);

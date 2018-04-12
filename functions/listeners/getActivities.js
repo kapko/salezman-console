@@ -76,7 +76,7 @@ function getTotalValue(dataValue) {
     }
   }
 
-  console.log('totalValue', totalValue);
+  console.log('totalValue1', totalValue);
   return totalValue;
 }
 

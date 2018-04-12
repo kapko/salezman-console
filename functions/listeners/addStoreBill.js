@@ -16,10 +16,10 @@ exports.addStoreBill = functions.database.ref('/my-work-ordered/{userId}/{prodId
         let opt = [];
 
         for (let id in users) {
-          console.log(`REMOVE /store-billing/${id}/${prevData.store_name}${prevData.name}${prevData.Weight}`);
+          console.log(`REMOVE /store-billing/${id}/${prevData.key}`);
 
           opt.push(
-            db.setValue(`/store-billing/${id}/${prevData.store_name}${prevData.name}${prevData.Weight}`, null)
+            db.setValue(`/store-billing/${id}/${prevData.key}`, null)
           );
         }
 
@@ -35,19 +35,20 @@ exports.addStoreBill = functions.database.ref('/my-work-ordered/{userId}/{prodId
         let opt = [];
 
         bilObject.counter = data.counter;
-        bilObject.price = data.Price;
-        bilObject.name = '' + data.name + data.Weight;
+        bilObject.price = data.price;
+        bilObject.name = '' + data.name + ' ' + data.weight;
         bilObject.store_name = data.store_name;
         bilObject.order_by = userId;
-        bilObject.order_date = data.count_date
+        bilObject.order_date = data.count_date;
+        bilObject.key = data.key;
 
         console.log('bilObject', bilObject);
 
         for (let id in users) {
-          console.log(`/store-billing/${id}/${bilObject.store_name}${bilObject.name}`);
+          console.log(`/store-billing/${id}/${data.key}`);
 
           opt.push(
-            db.setValue(`/store-billing/${id}/${bilObject.store_name}${bilObject.name}`, bilObject)
+            db.setValue(`/store-billing/${id}/${data.key}`, bilObject)
           );
         }
 

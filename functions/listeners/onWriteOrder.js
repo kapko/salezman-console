@@ -5,15 +5,15 @@ exports.onWriteUserOrderProduct = functions.database.ref('/users-ordered-product
 .onWrite(event => {
   let data = event.data.val();
   let { userId, date, prodId, storeName } = event.params;
-
-  console.log(`CHANGED /my-work-ordered/${userId}/${storeName}${prodId}`);
+  console.log('ORDER data', data);
+  console.log(`CHANGED /my-work-ordered/${userId}/${prodId}`);
   // on remove item
   if (!data) {
-    return db.setValue(`/my-work-ordered/${userId}/${storeName}${prodId}`, null);
+    return db.setValue(`/my-work-ordered/${userId}/${prodId}`, null);
   } else {
   // on create item
     data['date'] = date;
     data['store_name'] = storeName;
-    return db.setValue(`/my-work-ordered/${userId}/${storeName}${prodId}`, data);
+    return db.setValue(`/my-work-ordered/${userId}/${prodId}`, data);
   }
 });

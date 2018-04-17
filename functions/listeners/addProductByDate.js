@@ -5,17 +5,17 @@ exports.countStock = functions.database
 .ref('users-product/{storeId}/{uid}/{date}')
   .onWrite(event => {
     let data = event.data.val();
-    let { storeId, date } = event.params;
+    let { storeId, date, uid } = event.params;
     let storeUrl = storeId.toLowerCase();
 
     console.log('data', data);
-    console.log(`URL /count-stock-date/${storeUrl}/${date}`);
+    console.log(`URL /count-stock-date/${uid}/${storeUrl}/${date}`);
 
     // on remove item
     if (!data) {
-      return db.setValue(`/count-stock-date/${storeUrl}`, null);
+      return db.setValue(`/count-stock-date/${uid}/${storeUrl}`, null);
     } else {
-      return db.setValue(`/count-stock-date/${storeUrl}/`, date);
+      return db.setValue(`/count-stock-date/${uid}/${storeUrl}/`, date);
     }
 
   });
@@ -24,52 +24,54 @@ exports.countOrder = functions.database
 .ref('users-ordered-product/{storeId}/{uid}/{date}')
   .onWrite(event => {
     let data = event.data.val();
-    let { storeId, date } = event.params;
+    let { storeId, date, uid } = event.params;
     let storeUrl = storeId.toLowerCase();
 
     console.log('data', data);
-    console.log(`URL /count-order-date/${storeUrl}/${date}`);
+    console.log(`URL /count-order-date/${uid}/${storeUrl}/${date}`);
 
     // on remove item
     if (!data) {
-      return db.setValue(`/count-order-date/${storeUrl}`, null);
+      return db.setValue(`/count-order-date/${uid}/${storeUrl}`, null);
     } else {
-      return db.setValue(`/count-order-date/${storeUrl}/`, date);
+      return db.setValue(`/count-order-date/${uid}/${storeUrl}/`, date);
     }
 
   });
 
 exports.countSupply = functions.database
-.ref('supply/{storeId}/{supply}/supply_date')
+.ref('/my-work-supply/{uid}/{supplyId}')
   .onWrite(event => {
-    let data = event.data.val();
-    let { storeId } = event.params;
-    let storeUrl = storeId.toLowerCase();
+    let data = (event.data.val()) ? event.data.val() : event.data.previous.val();
+    let { uid } = event.params;
+    // NOTICE => store name is a store_key
+    let storeUrl = data.store_name;
 
     // on remove item
-    if (!data) {
-      return db.setValue(`/count-supply-date/${storeUrl}`, null);
+    if (!event.data.val()) {
+      return db.setValue(`/count-supply-date/${uid}/${storeUrl}`, null);
     } else {
-      let val = data.replace(/\./ig, '-');
-      console.log(`URL /count-supply-date/${storeUrl}/${val}`);
-      return db.setValue(`/count-supply-date/${storeUrl}/`, val);
+      let val = data.supply_date.replace(/\./ig, '-');
+      console.log(`URL /count-supply-date/${uid}/${storeUrl}/${val}`);
+      return db.setValue(`/count-supply-date/${uid}/${storeUrl}/`, val);
     }
   });
 
 exports.countPayment = functions.database
-.ref('paid-list/{storeId}/{paymentId}/payment_date')
+.ref('my-work-payment/{uid}/{paymentId}')
   .onWrite(event => {
-    let data = event.data.val();
-    let { storeId } = event.params;
-    let storeUrl = storeId.toLowerCase();
+    let data = (event.data.val()) ? event.data.val() : event.data.previous.val();
+    let { uid } = event.params;
+    // NOTICE => store name is a store_key
+    let storeUrl = data.store_name;
 
     // on remove item
-    if (!data) {
-      return db.setValue(`/count-payment-date/${storeUrl}`, null);
+    if (!event.data.val()) {
+      return db.setValue(`/count-payment-date/${uid}/${storeUrl}`, null);
     } else {
-      let val = data.replace(/\./ig, '-');
-      console.log(`URL /count-payment-date/${storeUrl}/${val}`);
-      return db.setValue(`/count-payment-date/${storeUrl}/`, val);
+      let val = data.payment_date.replace(/\./ig, '-');
+      console.log(`URL /count-payment-date/${uid}/${storeUrl}/${val}`);
+      return db.setValue(`/count-payment-date/${uid}/${storeUrl}/`, val);
     }
 
   });

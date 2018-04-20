@@ -4,57 +4,40 @@ const db = require('../db');
 exports.myWorkedStock = functions.database.ref('/my-work-stock/{uid}/')
 .onWrite(event => {
   let data = event.data.val();
-  let prevData = event.data.previous.val();
   let { uid } = event.params;
 
-  let dataValue = (!data) ? prevData : data;
-
   console.log('data', data);
-  console.log('prevData', prevData);
-  
-  return db.updateValue(`/activities/stock/${uid}/`, getTotalValue(dataValue));
+
+  return db.setValue(`/activities/stock/${uid}/`, (data) ? getTotalValue(data) : null);
 });
 
 exports.myWorkedOrdered = functions.database.ref('/my-work-ordered/{uid}/')
 .onWrite(event => {
   let data = event.data.val();
-  let prevData = event.data.previous.val();
   let { uid } = event.params;
 
-  let dataValue = (!data) ? prevData : data;
+  console.log('data', data);
 
-  console.log('myWorkedOrdered data', data);
-  console.log('myWorkedOrdered prevData', prevData);
-
-  return db.updateValue(`/activities/order/${uid}/`, getTotalValue(dataValue));
+  return db.setValue(`/activities/order/${uid}/`, (data) ? getTotalValue(data) : null);
 });
 
 exports.myWorkedSupply = functions.database.ref('/my-work-supply/{uid}/')
 .onWrite(event => {
   let data = event.data.val();
-  let prevData = event.data.previous.val();
   let { uid } = event.params;
 
-  let dataValue = (!data) ? prevData : data;
-
-  console.log('suply data', data);
-  console.log('suply prevData', prevData);
-  
-  return db.updateValue(`/activities/supply/${uid}/`, getAmount(dataValue));
+  console.log('data', data);
+  db.setValue(`/activities/supply/${uid}/`, (data) ? getAmount(data) : null);
 });
 
 exports.myWorkedPayment = functions.database.ref('/my-work-payment/{uid}/')
 .onWrite(event => {
   let data = event.data.val();
-  let prevData = event.data.previous.val();
   let { uid } = event.params;
 
-  let dataValue = (!data) ? prevData : data;
-
-  console.log('suply data', data);
-  console.log('suply prevData', prevData);
+  console.log('data', data);
   
-  return db.updateValue(`/activities/payment/${uid}/`, getAmount(dataValue));
+  return db.setValue(`/activities/payment/${uid}/`, (data) ? getAmount(data) : null);
 });
 
 
@@ -65,7 +48,7 @@ function getTotalValue(dataValue) {
   for (let key in dataValue) {
     console.log('data key', dataValue[key]);
     let val = dataValue[key],
-      price = val.Price,
+      price = val.price,
       counter = val.counter,
       store = val.store_name;
 

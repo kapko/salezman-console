@@ -16,10 +16,10 @@ exports.addStoreBill = functions.database.ref('/my-work-ordered/{userId}/{prodId
         let opt = [];
 
         for (let id in users) {
-          console.log(`REMOVE /store-billing/${id}/${prevData.key}`);
+          console.log(`REMOVE /store-billing/${id}/${prevData.store_name}${prevData.key}`);
 
           opt.push(
-            db.setValue(`/store-billing/${id}/${prevData.key}`, null)
+            db.setValue(`/store-billing/${id}/${prevData.store_name}${prevData.key}`, null)
           );
         }
 
@@ -45,10 +45,10 @@ exports.addStoreBill = functions.database.ref('/my-work-ordered/{userId}/{prodId
         console.log('bilObject', bilObject);
 
         for (let id in users) {
-          console.log(`/store-billing/${id}/${data.key}`);
+          console.log(`/store-billing/${id}/${data.store_name}${data.key}`);
 
           opt.push(
-            db.setValue(`/store-billing/${id}/${data.key}`, bilObject)
+            db.setValue(`/store-billing/${id}/${data.store_name}${data.key}`, bilObject)
           );
         }
 

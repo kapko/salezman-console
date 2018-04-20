@@ -25,7 +25,7 @@ exports.myWorkedOrdered = functions.database.ref('/my-work-ordered/{uid}/')
 
   console.log('myWorkedOrdered data', data);
   console.log('myWorkedOrdered prevData', prevData);
-  
+
   return db.updateValue(`/activities/order/${uid}/`, getTotalValue(dataValue));
 });
 

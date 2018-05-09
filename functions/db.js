@@ -9,6 +9,19 @@ exports.getValue = (path) => {
   });
 };
 
+exports.orderByChildName = (path, key, val) => {
+  return new Promise((res, rej) => {
+    admin.database()
+      .ref(path)
+      .orderByChild(key)
+      .equalTo(val)
+      .once('value', 
+        data => res(data.val()),
+        err => rej(err)
+      );
+  });
+}
+
 exports.incrementValue = (path, increment) => {
   let ref = admin.database().ref(path);
   return ref.transaction(value => (value || 0) + (increment || 1));

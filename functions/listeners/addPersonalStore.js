@@ -5,16 +5,33 @@ exports.addPersonalStore = functions.database.ref('/store-names/{storeName}/pers
   .onWrite(event => {
     let data = event.data.val();
     let { uid, storeName } = event.params;
+    console.log('data', data);
+    console.log('storeName', storeName);
 
     if (!data) {
-      return db.setValue(`/personal-store/${uid}/${storeName}`, null);
+      let url = `/personal-store/${uid}/`;
+      console.log('DEL url', url + storeName);
+
+      return db.orderByChildName(url, 'key', storeName)
+        .then(res => {
+          console.log('res', res);
+          let key = Object.keys(res);
+          console.log('KEY', key);
+  
+          console.log('url2', url + key);
+
+          return db.setValue(url + key, null);
+        });
+
     } else {
       // on create item
       return db.getValue(`/store-names/${storeName}`)
         .then(store => {
           delete store.persons;
-          console.log(`URL /personal-store/${uid}/${storeName}`);
-          return db.setValue(`/personal-store/${uid}/${storeName}`, store);
+          store['key'] = storeName;
+          console.log(store);
+          console.log(`URL /personal-store/${uid}/`);
+          return db.pushValue(`/personal-store/${uid}/`, store);
         });
     }
 });

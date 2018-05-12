@@ -10,6 +10,7 @@ exports.elasticAdd = functions.database.ref('/store-names/{postId}')
 
   console.log('postId', postId);
   console.log('body', body);
+  console.log('URL', url);
 
   if (body) {
     return request.post({method: "POST", url, body, json: true});
